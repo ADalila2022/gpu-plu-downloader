@@ -1,46 +1,76 @@
-# GPU PLU Downloader 0.3.0 — version de test
+# GPU PLU Downloader
+
+Extension QGIS permettant de rechercher et de télécharger les données d’un Plan Local d’Urbanisme (PLU) ou d’un Plan Local d’Urbanisme intercommunal (PLUi) depuis le Géoportail de l’Urbanisme (GPU), puis de charger les couches géographiques dans QGIS.
+
+> **Version expérimentale**
+> Cette version est en cours de validation. Le téléchargement complet et le chargement des couches dans QGIS restent à valider.
+
+## Fonctionnalités
+
+Le plugin permet :
+
+- de rechercher une commune par son nom, son code INSEE ou son code postal ;
+- de sélectionner la commune dans une liste de résultats ;
+- de rechercher les PLU et PLUi publiés couvrant le point central de cette commune ;
+- de télécharger l’archive complète du document sélectionné ;
+- d’extraire l’archive en conservant son arborescence et ses pièces écrites ;
+- de rechercher les fichiers shapefile dans les sous-dossiers `Donnees_geographiques` ;
+- de charger les couches valides dans un groupe dédié dans QGIS.
+
+La recherche des documents utilise le module Urbanisme de l’API Carto de l’IGN. Le téléchargement utilise l’API du Géoportail de l’Urbanisme.
+
+## Utilisation
+
+1. Saisir le nom, le code INSEE ou le code postal d’une commune.
+2. Cliquer sur **Rechercher la commune**, puis sélectionner le résultat souhaité.
+3. Cliquer sur **Rechercher les documents GPU**.
+4. Sélectionner le PLU ou le PLUi proposé.
+5. Choisir un dossier de destination existant et vide.
+6. Cliquer sur **Télécharger et charger les SHP**.
+
+Les pièces écrites sont conservées sur disque. Seules les couches shapefile situées sous `Donnees_geographiques` sont chargées dans QGIS.
+
+## Limites de la version actuelle
+
+- La recherche géographique utilise le point central de la commune. Elle ne garantit pas l’identification de tous les documents couvrant une partie de son territoire.
+- Seuls les documents de type PLU et PLUi publiés sont proposés.
+- Lorsqu’une commune relève d’un PLUi, l’archive téléchargée correspond au document intercommunal complet.
+- Un dossier existant et vide est obligatoire pour chaque téléchargement.
+- Pour une saisie numérique de cinq chiffres, le plugin recherche d’abord un code INSEE, puis un code postal. Certains codes peuvent donc être ambigus.
+- L’annulation et la reprise des téléchargements ne sont pas disponibles.
+- Aucune symbologie automatique n’est appliquée aux couches.
+- Les archives dont la taille décompressée dépasse 4 Gio sont refusées.
+
+La recherche a été vérifiée sur Châteauroux et Charenton-le-Pont. L’accès à l’archive ZIP de Châteauroux a également été vérifié. Ces contrôles ne constituent pas une validation complète du fonctionnement dans QGIS.
+
+## Compatibilité
+
+- Version minimale déclarée : **QGIS 3.22**.
+- La compatibilité effective reste à valider sur les versions de QGIS ciblées.
+- Une connexion Internet est nécessaire pour la recherche et le téléchargement.
 
 ## Installation
-Dans QGIS : Extensions > Installer/Gérer les extensions > Installer depuis un ZIP.
-Sélectionner gpu_plu_downloader_0.3.0.zip. Si une ancienne version est chargée,
-redémarrer QGIS après installation, puis activer GPU PLU Downloader.
 
-## Test conseillé
-1. Rechercher Châteauroux (ou 36000), sélectionner Châteauroux (36044).
-2. Rechercher les documents : PLUi Châteauroux Métropole doit apparaître.
-3. Choisir un dossier existant et vide, dédié au téléchargement.
-4. Télécharger et charger les SHP. Le PLUi complet peut être volumineux.
-L'arborescence et les pièces écrites sont conservées. Seuls les SHP situés
-sous Donnees_geographiques sont chargés dans QGIS.
+Pendant la phase de test, installer le plugin depuis son archive ZIP :
 
-## Modifications
-- Interface centrée sur la commune ; suppression du choix EPCI/SIREN.
-- Recherche géographique API Carto au centre communal, filtrage PLU/PLUi
-  publiés et déduplication par identifiant GPU.
-- Téléchargement via /api/document/{documentId}/download.
-- Messages HTTP détaillés ; dossier vide obligatoire pour éviter les mélanges.
-- Fermeture du dialogue bloquée pendant une opération réseau.
+`Extensions > Installer/Gérer les extensions > Installer depuis un ZIP`
 
-## Vérifications et limites
-Recherche réelle concluante sur Châteauroux et Charenton-le-Pont.
-Premiers octets ZIP de Châteauroux vérifiés via la route de téléchargement.
-Tests locaux : parsing/filtrage, arborescence, SHP, protection ZIP.
-Pas de téléchargement complet ni de test de chargement dans une session QGIS.
-La recherche au centre communal peut manquer un document applicable à une
-portion différente de la commune : couverture complète à améliorer ensuite.
-La priorité INSEE puis code postal de la version précédente reste inchangée.
-Pas d'annulation ni de reprise des téléchargements.
+Sélectionner l’archive du plugin, puis activer **GPU PLU Downloader**.
 
-## Organisation du code
-- __init__.py : classFactory, point d'entrée QGIS.
-- gpu_plu_downloader.py : intégration QGIS et ouverture du dialogue.
-- gpu_plu_downloader_dialog.py : interface et orchestration.
-- worker.py : opérations en thread.
-- api.py : HTTP, téléchargement, extraction et détection des SHP.
-L'interface est construite en Python ; aucun fichier Qt Designer .ui n'est requis.
+Après le remplacement d’une version déjà chargée, redémarrer QGIS pour utiliser le nouveau code.
 
-## Avant publication sur le dépôt officiel
-Renseigner l'adresse email réelle et l'URL réelle du dépôt source dans metadata.txt.
-Choisir une licence et inclure le fichier LICENSE correspondant. Ces informations
-ne sont pas inventées dans cette version locale. La compatibilité minimale 3.22
-est héritée du prototype et doit être validée sur les versions ciblées.
+## Ressources
+
+- Géoportail de l’Urbanisme : https://www.geoportail-urbanisme.gouv.fr/
+- API GPU : https://www.geoportail-urbanisme.gouv.fr/api/
+- API Carto — module Urbanisme : https://apicarto.ign.fr/api/doc/gpu
+
+## Licence
+
+Ce projet est distribué sous licence **GNU General Public License v3.0 (GPL-3.0)**.
+
+Voir le fichier `LICENSE`.
+
+## Auteur
+
+**Dalila AMIAR MEFTAH (GEOMA-SIG)**
