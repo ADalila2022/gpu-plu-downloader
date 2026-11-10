@@ -1,0 +1,10 @@
+[general]
+name=GPU PLU Downloader
+qgisMinimumVersion=3.22
+description=Recherche, telecharge et charge les couches SHP des PLU/PLUi du Geoportail de l'Urbanisme.
+version=0.3.0
+author=GEOMA-SIG
+email=
+about=Plugin experimental utilisant les API publiques GPU et geo.api.gouv.fr. Tester avant utilisation en production.
+category=Web
+experimental=True
