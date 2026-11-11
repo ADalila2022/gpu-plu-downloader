@@ -1,10 +1,16 @@
 [general]
+icon=icon.png
 name=GPU PLU Downloader
 qgisMinimumVersion=3.22
-description=Recherche, telecharge et charge les couches SHP des PLU/PLUi du Geoportail de l'Urbanisme.
-version=0.3.0
-author=GEOMA-SIG
-email=
-about=Plugin experimental utilisant les API publiques GPU et geo.api.gouv.fr. Tester avant utilisation en production.
+description=Download French PLU and PLUi archives from the Geoportail de l'Urbanisme and load their shapefile layers into QGIS.
+version=1.0.2
+author=Dalila AMIAR (GEOMA-SIG)
+email=contact@geoma-sig.com
+about=GPU PLU Downloader searches for published PLU and PLUi documents using a municipality name, INSEE code or postal code. It downloads and extracts the complete document archive, preserves its directory structure and written documents, and loads shapefiles found in Donnees_geographiques into QGIS. This experimental version identifies applicable documents using the municipality centre point.
 category=Web
 experimental=True
+deprecated=False
+hasProcessingProvider=False
+homepage=https://github.com/ADalila2022/gpu-plu-downloader
+repository=https://github.com/ADalila2022/gpu-plu-downloader
+tracker=https://github.com/ADalila2022/gpu-plu-downloader/issues
